@@ -12,9 +12,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 const slides = [
-    { id: 1, src: './hero_video/1/festival.mp4', poster: '' },
-    { id: 2, src: './hero_video/2/travel.mp4', poster: '' },
-    { id: 3, src: './hero_video/3/sample3.mp4', poster: '' }
+    { id: 1, src: '/video/festival.mp4', poster: '' },
+    { id: 2, src: '/video/travel.mp4', poster: '' },
+    { id: 3, src: '/video/sample3.mp4', poster: '' }
 ];
 
 export const HeroSection: React.FC = () => {
