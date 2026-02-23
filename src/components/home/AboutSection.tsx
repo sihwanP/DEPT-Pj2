@@ -1,0 +1,71 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+
+export const AboutSection: React.FC = () => {
+    const navigate = useNavigate();
+
+    return (
+        <section className="py-32 bg-charcoal overflow-hidden">
+            <div className="container mx-auto px-6">
+                <div className="flex flex-col lg:flex-row items-center gap-16">
+                    <motion.div
+                        initial={{ opacity: 0, x: -50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                        className="lg:w-1/2"
+                    >
+                        <div className="relative">
+                            <div className="relative aspect-video w-full rounded-lg shadow-2xl overflow-hidden group">
+                                <iframe
+                                    className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
+                                    src="./video/caravan_trip.mp4"
+                                    title="Traditional Korean Aesthetic Video"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                ></iframe>
+                                {/* Overlay to prevent interaction if desired, or allow it. Currently allowing interaction but adding a subtle overlay for consistent look until hovered? No, let's keep it clean. */}
+                                <div className="absolute inset-0 bg-black/20 pointer-events-none group-hover:bg-transparent transition-colors duration-500" />
+                            </div>
+                            <div className="absolute -bottom-10 -right-10 w-2/3 h-2/3 bg-dancheong-green/10 -z-10 rounded-lg"></div>
+                        </div>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, x: 50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                        className="lg:w-1/2"
+                    >
+                        <h2 className="text-sm font-bold tracking-widest text-dancheong-green mb-4 uppercase">About Us</h2>
+                        <h3 className="text-4xl md:text-5xl font-serif font-bold text-white mb-8 leading-tight">
+                            정체성과 감각을 잇는 <br />
+                            CREATIVE PARTNER
+                        </h3>
+                        <div className="space-y-6 text-lg text-white/70 font-light leading-relaxed">
+                            <p>
+                                department은 저마다의 고유한 시선과 그 섬세한 결을 존중하며, 감각적인 라이프스타일을 잇는 가교입니다.
+                                우리는 단순히 상품을 판매하는 것을 넘어, 문화를 경험하고 향유하는 새로운 방식을 제안합니다.
+                            </p>
+                            <p>
+                                당신의 숨결을 트여줄 클래스 부터, 고유한 전시와 공연까지.
+                                당신만의 정체성이 온전히 담긴 당신의 감각을 department과 함께 완성해보세요.
+                            </p>
+                        </div>
+
+                        <div className="mt-12">
+                            <button
+                                onClick={() => navigate('/about')}
+                                className="text-dancheong-green hover:text-white border border-dancheong-green hover:bg-dancheong-green px-8 py-3 rounded-none transition-all duration-300"
+                            >
+                                브랜드 스토리 보기
+                            </button>
+                        </div>
+                    </motion.div>
+                </div>
+            </div>
+        </section>
+    );
+};
