@@ -61,11 +61,11 @@ export const FloorGuideModal: React.FC<FloorGuideModalProps> = ({ isOpen, onClos
                             </button>
                         </div>
 
-                        {/* List - Staircase Layout */}
-                        <div className="overflow-y-auto p-6 space-y-4 custom-scrollbar lg:pl-12 lg:pr-24">
+                        {/* List - Reverse Staircase Layout */}
+                        <div className="overflow-y-auto p-6 space-y-4 custom-scrollbar lg:pr-24">
                             {reversedFloors.map((floor, index) => {
-                                // Calculate margin left to create a staircase effect
-                                const marginLeft = `${index * 40}px`;
+                                // Calculate margin left to create a reverse staircase effect (역ㄱ자)
+                                const marginLeft = `${(reversedFloors.length - 1 - index) * 40}px`;
                                 
                                 return (
                                     <Link
@@ -76,16 +76,11 @@ export const FloorGuideModal: React.FC<FloorGuideModalProps> = ({ isOpen, onClos
                                         style={{ marginLeft }}
                                     >
                                         <motion.div
-                                            initial={{ opacity: 0, x: -20 }}
+                                            initial={{ opacity: 0, x: 20 }}
                                             animate={{ opacity: 1, x: 0 }}
                                             transition={{ delay: index * 0.1 }}
                                             className="flex items-center gap-6 p-4 md:p-5 rounded-2xl bg-[#222222] shadow-[0_4px_20px_rgba(0,0,0,0.3)] border border-white/5 hover:border-dancheong-red/50 hover:bg-[#2a2a2a] transition-all relative z-10 before:absolute before:-inset-[1px] before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent before:rounded-2xl before:opacity-0 hover:before:opacity-100 before:transition-opacity"
                                         >
-                                            {/* Step Connector Line */}
-                                            {index !== reversedFloors.length - 1 && (
-                                                <div className="absolute left-[2.2rem] top-[4.5rem] w-[2px] h-[3rem] bg-white/10 z-0 origin-top hidden md:block" />
-                                            )}
-
                                             {/* Floor Number Label */}
                                             <div className="flex-shrink-0 relative">
                                                 <div className="w-[70px] h-[70px] flex flex-col items-center justify-center bg-black/40 rounded-xl border border-white/10 group-hover:border-dancheong-red/30 transition-colors shadow-inner overflow-hidden">
