@@ -77,7 +77,7 @@ const Header: React.FC = () => {
         const videos = document.querySelectorAll('video');
         videos.forEach(video => {
             // 재생중인 비디오의 경우만 상태를 업데이트 (현재 슬라이드의 비디오는 dataset.hasSound를 가진다거나 등)
-            // 비디오의 본래 소리설정 여부를 판단하여 토글
+            // 전역 isGlobalMuted 상태에 따라 음소거 적용 (hasSound가 true인 영상만)
             if (video.dataset.hasSound === 'true') {
                  video.muted = isGlobalMuted;
             }
