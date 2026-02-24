@@ -12,11 +12,11 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 const slides = [
-    { id: 1, src: '', poster: '', hasSound: false },
-    { id: 2, src: '/video/popup_store.mp4', poster: '', hasSound: true },
-    { id: 3, src: '/video/festival.mp4', poster: '', hasSound: false },
-    { id: 4, src: '', poster: '', hasSound: false },
-    { id: 5, src: '/video/travel.mp4', poster: '', hasSound: false }
+    { id: 1, src: '', poster: '' },
+    { id: 2, src: '/video/popup_store.mp4', poster: '' },
+    { id: 3, src: '/video/festival.mp4', poster: '' },
+    { id: 4, src: '', poster: '' },
+    { id: 5, src: '/video/travel.mp4', poster: '' }
 ];
 
 export const HeroSection: React.FC = () => {
@@ -26,12 +26,16 @@ export const HeroSection: React.FC = () => {
     const handleSlideChange = (swiper: any) => {
         const swiperSlides = swiper.slides;
         if (!swiperSlides) return;
+        
+        // 전역 음소거 상태를 body에서 읽어오기 (기본값 설정 반영)
+        const isGlobalMuted = document.body.dataset.globalMuted !== 'false';
+
         Array.from(swiperSlides).forEach((slide: any) => {
             const video = slide.querySelector('video');
             if (!video) return;
             
             if (slide.classList.contains('swiper-slide-active')) {
-                video.muted = video.dataset.hasSound !== 'true';
+                video.muted = isGlobalMuted;
                 video.currentTime = 0;
                 video.play().catch((e: any) => console.log('Autoplay prevented or interrupted', e));
             } else {
@@ -100,16 +104,17 @@ export const HeroSection: React.FC = () => {
                 >
                     {slides.map((slide) => (
                         <SwiperSlide key={slide.id} className="relative w-full h-full overflow-hidden">
-                            <video
-                                muted={!slide.hasSound}
-                                data-has-sound={slide.hasSound}
-                                playsInline
-                                preload="metadata"
-                                loop
-                                className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto object-cover -translate-x-1/2 -translate-y-1/2 opacity-70"
-                            >
-                                <source src={slide.src} type="video/mp4" />
-                            </video>
+                            {slide.src && (
+                                <video
+                                    muted={true}
+                                    playsInline
+                                    preload="metadata"
+                                    loop
+                                    className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto object-cover -translate-x-1/2 -translate-y-1/2 opacity-70"
+                                >
+                                    <source src={slide.src} type="video/mp4" />
+                                </video>
+                            )}
                         </SwiperSlide>
                     ))}
                 </Swiper>

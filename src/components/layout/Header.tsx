@@ -73,14 +73,12 @@ const Header: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        // 전역 음소거 상태가 변경될 때마다 화면 내 모든 비디오 엘리먼트에 토글을 적용합니다.
+        // 전역 음소거 상태를 body에 저장
+        document.body.dataset.globalMuted = isGlobalMuted.toString();
+        // 화면 내 모든 비디오 요소를 찾아 전역 상태를 동기화합니다.
         const videos = document.querySelectorAll('video');
         videos.forEach(video => {
-            // 재생중인 비디오의 경우만 상태를 업데이트 (현재 슬라이드의 비디오는 dataset.hasSound를 가진다거나 등)
-            // 전역 isGlobalMuted 상태에 따라 음소거 적용 (hasSound가 true인 영상만)
-            if (video.dataset.hasSound === 'true') {
-                 video.muted = isGlobalMuted;
-            }
+             video.muted = isGlobalMuted;
         });
     }, [isGlobalMuted]);
 
