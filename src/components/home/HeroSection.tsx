@@ -12,9 +12,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 const slides = [
-    { id: 1, src: '/video/festival.mp4', poster: '' },
-    { id: 2, src: '/video/travel.mp4', poster: '' },
-    { id: 3, src: '/video/sample3.mp4', poster: '' }
+    { id: 1, src: '/video/festival.mp4', poster: '', hasSound: false },
+    { id: 2, src: '/video/travel.mp4', poster: '', hasSound: false },
+    { id: 3, src: '/video/popup.mp4', poster: '', hasSound: true }
 ];
 
 export const HeroSection: React.FC = () => {
@@ -29,10 +29,12 @@ export const HeroSection: React.FC = () => {
             if (!video) return;
             
             if (slide.classList.contains('swiper-slide-active')) {
+                video.muted = video.dataset.hasSound !== 'true';
                 video.currentTime = 0;
                 video.play().catch((e: any) => console.log('Autoplay prevented or interrupted', e));
             } else {
                 video.pause();
+                video.muted = true;
             }
         });
     };
@@ -97,7 +99,8 @@ export const HeroSection: React.FC = () => {
                     {slides.map((slide) => (
                         <SwiperSlide key={slide.id} className="relative w-full h-full overflow-hidden">
                             <video
-                                muted
+                                muted={!slide.hasSound}
+                                data-has-sound={slide.hasSound}
                                 playsInline
                                 preload="metadata"
                                 loop

@@ -60,6 +60,17 @@ const Header: React.FC = () => {
         };
     }, []);
 
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            if (!target.closest('.desktop-nav-item')) {
+                setActiveDropdown(null);
+            }
+        };
+        document.addEventListener('click', handleClickOutside);
+        return () => document.removeEventListener('click', handleClickOutside);
+    }, []);
+
     const handleLogout = async () => {
         await signOut();
         setIsMenuOpen(false);
@@ -85,55 +96,43 @@ const Header: React.FC = () => {
     const navItems: NavItem[] = [
         {
             id: 'trend',
-            label: t('nav.trend'),
+            label: '트렌드',
             subitems: [
-                { id: 'popup', label: t('nav.popup') },
-                { id: 'collab', label: t('nav.collab') },
-                { id: 'new', label: t('nav.new') }
+                { id: 'discount', label: '할인상품' },
+                { id: 'new', label: '신상품' }
             ]
         },
         {
-            id: 'tickets',
-            label: t('nav.tickets'),
+            id: 'popup',
+            label: '팝업',
             subitems: [
-                { id: 'performance', label: t('nav.performance') },
-                { id: 'booking', label: t('nav.booking') },
-                { id: 'exhibition', label: t('nav.exhibition') }
+                { id: 'store', label: '팝업 스토어' }
             ]
         },
         {
-            id: 'art',
-            label: t('nav.art'),
+            id: 'performance_exhibition',
+            label: '공연/전시',
             subitems: [
-                { id: 'class', label: t('nav.class') },
-                { id: 'fashion', label: t('nav.fashion') }
+                { id: 'exhibition', label: '전시' },
+                { id: 'concert', label: '콘서트' },
+                { id: 'booking', label: '예매하기' }
             ]
         },
         {
-            id: 'style',
-            label: t('nav.style'),
+            id: 'activity_style',
+            label: '활동/스타일',
             subitems: [
-                { id: 'photo', label: t('nav.photo') },
-                { id: 'video', label: t('nav.video') },
-                { id: 'media', label: t('nav.media') }
+                { id: 'class', label: '클래스 수업' },
+                { id: 'style', label: '스타일' }
             ]
         },
         {
-            id: 'travel',
-            label: t('nav.travel'),
+            id: 'local',
+            label: '로컬',
             subitems: [
-                { id: 'local', label: t('nav.local') },
-                { id: 'course', label: t('nav.course') },
-                { id: 'guide', label: t('nav.guide') }
-            ]
-        },
-        {
-            id: 'community',
-            label: t('nav.community'),
-            subitems: [
-                { id: 'notice', label: t('nav.notice'), path: '/notice' },
-                { id: 'qna', label: t('nav.qna'), path: '/qna' },
-                { id: 'reviews', label: t('nav.reviews'), path: '/reviews' }
+                { id: 'local_item', label: '로컬' },
+                { id: 'travel', label: '여행' },
+                { id: 'guide', label: '가이드' }
             ]
         }
     ];
@@ -150,15 +149,16 @@ const Header: React.FC = () => {
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <nav className="hidden xl:flex items-center space-x-1.5 font-sans">
+                    <nav className="hidden xl:flex items-center space-x-6 font-sans">
                         {navItems.map((item) => (
                             <div
                                 key={item.id}
-                                className="relative group"
-                                onMouseEnter={() => setActiveDropdown(item.id)}
-                                onMouseLeave={() => setActiveDropdown(null)}
+                                className="relative group desktop-nav-item"
                             >
-                                <button className={`flex items-center text-[18px] font-medium text-white/70 hover:text-white transition-all duration-300 gap-1.5 px-4 ${isScrolled ? 'h-16' : 'h-20'}`}>
+                                <button 
+                                    onClick={() => setActiveDropdown(activeDropdown === item.id ? null : item.id)}
+                                    className={`flex items-center text-[18px] font-bold text-white/70 hover:text-white transition-all duration-300 gap-1.5 px-6 ${isScrolled ? 'h-16' : 'h-20'}`}
+                                >
                                     {item.label}
                                     <ChevronDown size={12} className={`transition-transform duration-200 ${activeDropdown === item.id ? 'rotate-180' : ''}`} />
                                 </button>
@@ -171,6 +171,7 @@ const Header: React.FC = () => {
                                                 key={sub.id}
                                                 to={sub.path || `/${item.id}?filter=${sub.id}`}
                                                 className="px-5 py-2.5 text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all duration-200 text-left relative group/item"
+                                                onClick={() => setActiveDropdown(null)}
                                             >
                                                 <span className="relative z-10">{sub.label}</span>
                                                 <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 bg-dancheong-red transition-all duration-200 group-hover/item:h-3/5" />
