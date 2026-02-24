@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 // Mapping URL paths to Internal Categories (for filtering)
 // Includes legacy keys for backward compatibility
 const CATEGORY_FILTERS: Record<string, string[]> = {
-    'trend': ['Trend', 'trend', 'popup', 'collab', 'new', '트렌드', '팝업'],
+    'trend': ['Trend', 'trend', 'popup', 'collab', 'new', 'discount', '트렌드', '팝업', '할인상품', '신상품'],
     'tickets': ['Tickets', 'tickets', 'Exhibition', 'Performance', 'performance', 'exhibition', 'booking', '예매하기', '공연', '전시'],
     'art': ['Art', 'art', 'class', 'fashion', '활동', '예술', '클래스', '스타일'],
     'style': ['Style', 'style', 'photo', 'video', 'media', '사진', '영상', '미디어'],
@@ -122,11 +122,15 @@ const CategoryPage: React.FC = () => {
                         transition={{ duration: 0.8 }}
                     >
                         <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-6 tracking-tight">
-                            {floorData ? (
-                                <AutoTranslatedText text={getLocalizedText(floorData.title, i18n.language)} />
-                            ) : (
-                                categoryId
-                            )}
+                            {(() => {
+                                if (categoryId === 'trend' && filter === 'discount') return '할인상품';
+                                if (categoryId === 'trend' && filter === 'new') return '신상품';
+                                return floorData ? (
+                                    <AutoTranslatedText text={getLocalizedText(floorData.title, i18n.language)} />
+                                ) : (
+                                    categoryId
+                                );
+                            })()}
                         </h1>
                         {floorData && (
                             <p className="text-xl md:text-2xl text-white/80 font-light max-w-2xl mx-auto">

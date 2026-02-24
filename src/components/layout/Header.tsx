@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { User, LogOut, Menu, X, Globe, ChevronDown, Search } from 'lucide-react';
+import { User, LogOut, Menu, X, Globe, ChevronDown, Search, Volume2, VolumeX } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { supportedLanguages } from '../../utils/i18nUtils';
@@ -25,6 +25,7 @@ const Header: React.FC = () => {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isLoginOpen, setIsLoginOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isGlobalMuted, setIsGlobalMuted] = useState(true);
 
     const searchInputRef = useRef<HTMLInputElement>(null);
     const mobileSearchInputRef = useRef<HTMLInputElement>(null);
@@ -70,6 +71,18 @@ const Header: React.FC = () => {
         document.addEventListener('click', handleClickOutside);
         return () => document.removeEventListener('click', handleClickOutside);
     }, []);
+
+    useEffect(() => {
+        // 전역 음소거 상태가 변경될 때마다 화면 내 모든 비디오 엘리먼트에 토글을 적용합니다.
+        const videos = document.querySelectorAll('video');
+        videos.forEach(video => {
+            // 재생중인 비디오의 경우만 상태를 업데이트 (현재 슬라이드의 비디오는 dataset.hasSound를 가진다거나 등)
+            // 비디오의 본래 소리설정 여부를 판단하여 토글
+            if (video.dataset.hasSound === 'true') {
+                 video.muted = isGlobalMuted;
+            }
+        });
+    }, [isGlobalMuted]);
 
     const handleLogout = async () => {
         await signOut();
@@ -185,6 +198,17 @@ const Header: React.FC = () => {
 
                     {/* User Actions & Utilities */}
                     <div className="hidden lg:flex items-center space-x-5 font-sans">
+                        {/* Audio Control */}
+                        <button
+                            onClick={() => setIsGlobalMuted(!isGlobalMuted)}
+                            className="flex items-center text-white/70 hover:text-white transition-colors gap-1"
+                            title={isGlobalMuted ? '소리 켜기' : '소리 끄기'}
+                        >
+                            {isGlobalMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                        </button>
+
+                        <div className="h-4 w-[1px] bg-white/10" />
+
                         {/* Search */}
                         <div className="relative flex items-center justify-end">
                             <div 
@@ -274,8 +298,16 @@ const Header: React.FC = () => {
 
                     {/* Mobile Menu Button */}
                     <div className="flex items-center space-x-3 lg:hidden relative">
-                        <div 
-                            className={`flex items-center absolute right-[3.5rem] transition-all duration-300 ease-in-out overflow-hidden rounded-full ${
+                        {/* Audio Control for Mobile */}
+                        <button
+                            onClick={() => setIsGlobalMuted(!isGlobalMuted)}
+                            className="text-white/70 hover:text-white transition-colors relative z-10"
+                            title={isGlobalMuted ? '소리 켜기' : '소리 끄기'}
+                        >
+                            {isGlobalMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                        </button>
+
+                        <div className={`flex items-center absolute right-[3.5rem] transition-all duration-300 ease-in-out overflow-hidden rounded-full ${
                                 isSearchOpen ? 'bg-white w-[200px] pl-3 pr-2 py-1.5 opacity-100 visible' : 'bg-transparent w-0 opacity-0 invisible pl-0 py-1'
                             }`}
                         >
