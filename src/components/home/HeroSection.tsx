@@ -15,8 +15,8 @@ const slides = [
     { id: 1, src: '/video/festival.mp4', poster: '', hasSound: false },
     { id: 2, src: '/video/travel.mp4', poster: '', hasSound: false },
     { id: 3, src: '/video/popup_store.mp4', poster: '', hasSound: true },
-    { id: 4, src: '/video/festival.mp4', poster: '', hasSound: false }, // 추가될 4번째 영상 임시 설정
-    { id: 5, src: '/video/travel.mp4', poster: '', hasSound: false }   // 추가될 5번째 영상 임시 설정
+    { id: 4, src: '', poster: '', hasSound: false },
+    { id: 5, src: '', poster: '', hasSound: false }
 ];
 
 export const HeroSection: React.FC = () => {
